@@ -1,0 +1,41 @@
+{
+  "name": "nextjs-hackathon",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "setup": "npx envdist",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@heroicons/react": "^1.0.4",
+    "@supabase/supabase-js": "^1.22.3",
+    "await-to-js": "^3.0.0",
+    "jotai": "^1.3.0",
+    "next": "11.1.0",
+    "nookies": "^2.5.2",
+    "nprogress": "^0.2.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "swr": "^0.5.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.2.1",
+    "@tailwindcss/forms": "^0.3.3",
+    "@types/nprogress": "^0.2.0",
+    "@types/react": "17.0.19",
+    "autoprefixer": "^10.3.2",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.0",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.7",
+    "typescript": "4.3.5"
+  },
+  "env": {
+    "path": ".",
+    "dist": ".env.dist",
+    "pattern": ".env.local"
+  }
+}
