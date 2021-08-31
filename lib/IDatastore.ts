@@ -18,11 +18,9 @@ export type AuthSession = {
   refresh_token?: string
 }
 
-export abstract class IDatastore{
-  public static initialize(): IDatastore{
-    throw "This method needs to be implemented"  //Throw this until https://github.com/microsoft/TypeScript/issues/34516 got implemented
-  };
-  public abstract signinWithProvider(provider: AuthProvider, options?: AuthOptions): Promise<AuthSession | null>;
-  public abstract signout(): Promise<void>;
-  public abstract onAuthStateChanged(callback: (event: AuthEvent, data: any) => void): Unsubscribe;
+export interface IDatastore<U, S> {
+  signinWithEmail(email: string, password?: string): Promise<U | null>;
+  signinWithProvider(provider: AuthProvider, options?: AuthOptions): Promise<S | null>;
+  signout(): Promise<void>;
+  onAuthStateChanged(callback: (event: AuthEvent, data: any) => void): Unsubscribe;
 }

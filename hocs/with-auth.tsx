@@ -11,6 +11,10 @@ type WithAuthProps = {
   LoadingComponent?: NextComponentType<NextPageContext, any, {}>
 }
 
+function isWhitelisted(pathname: string): boolean{
+  return ['/auth', '/404', '/403', '/500'].includes(pathname)
+}
+
 export const withAuth = ({
   WrappedComponent,
   LoadingComponent = PageLoading,
@@ -18,19 +22,19 @@ export const withAuth = ({
   const router = useRouter();
   const { user, loading } = useAuth();
   useEffect(() => {
-    if (!user && !loading && !['/auth', '/404', '/403', '/500'].includes(router.pathname)) {
+    console.log("useEffect", !loading && !user && !isWhitelisted(router.pathname));
+    if (!loading && !user && !isWhitelisted(router.pathname)) {
       router.push('/auth')
     }
     
-    if (user && !loading && router.pathname == '/auth') router.push('/')
+    if (!loading && user && router.pathname == '/auth') router.push('/')
   }, [user, loading])
 
-  if (!user && loading) {
+  if ((loading && !user) || (!loading && !user && !isWhitelisted(router.pathname))) {
     return <LoadingComponent />
   }
   
-  if(((user && !loading && router.pathname != '/auth') ||
-  (!user && router.pathname == '/auth') || router.pathname == '/404')) return <WrappedComponent {...props} />;
-
+  if((!loading && user && router.pathname != '/auth') || (!loading && !user && isWhitelisted(router.pathname))) return <WrappedComponent {...props} />;
+  
   return <Page403 />
 }

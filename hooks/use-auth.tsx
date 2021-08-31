@@ -1,14 +1,14 @@
 import { atom, useAtom } from "jotai"
 import { useEffect } from "react";
 import nookies from 'nookies';
-import { AuthEvent, AuthProvider, IDatastore } from "../lib/IDatastore";
+import { AuthEvent, AuthProvider } from "../lib/IDatastore";
 import { SupabaseDatastore } from "../lib/SupabaseDatastore";
 import { Session } from "@supabase/supabase-js";
 import to from 'await-to-js';
 
 const userAtom = atom<any>(null);
 const userLoadingAtmom = atom(true);
-const ds: IDatastore = SupabaseDatastore.initialize();
+const ds = new SupabaseDatastore();
 
 export const useAuth = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -43,6 +43,10 @@ export const useAuth = () => {
     return ds.signinWithProvider(provider);
   }
 
+  const signinWithEmail = async (email: string, password?: string) => {
+    return ds.signinWithEmail(email, password);
+  }
+
   const signout = async () => {
     const [] = await to(ds.signout());
     setUser(null);
@@ -52,6 +56,7 @@ export const useAuth = () => {
     user,
     loading,
     signinWithProvider,
+    signinWithEmail,
     signout
   }
 }
