@@ -1,19 +1,12 @@
 import { AuthEvent, AuthProvider, Unsubscribe, AuthOptions, IDatastore } from "./IDatastore";
-import { createClient, SupabaseClient, Session, User } from '@supabase/supabase-js'
+import { SupabaseClient, Session, User } from '@supabase/supabase-js'
+import { initSupabase } from "./supabase";
 
 export class SupabaseDatastore implements IDatastore<User, Session> {
   private client: SupabaseClient;
 
   constructor() {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL,
-      supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseAnonKey) throw new Error("NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be defined")
-
-    this.client = createClient(
-      supabaseUrl,
-      supabaseAnonKey
-    )
+    this.client = initSupabase();
   }
 
   async signinWithEmail(email: string, password?: string): Promise<User | null> {
