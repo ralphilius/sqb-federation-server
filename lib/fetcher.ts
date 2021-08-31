@@ -1,1 +1,3 @@
-export default (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json())
+const fetcher = (resource: string, init?: RequestInit) => fetch(resource, init).then(res => res.json());
+
+export default fetcher;
