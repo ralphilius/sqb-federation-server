@@ -1,42 +1,36 @@
-# NextJS Hackathon Starter
-A boilerplate for NextJS application with Typescript support
+# Stellar Federation Server
+NextJS implementation for Federation Server as described in [stellar-quest-bounties](https://github.com/tyvdh/stellar-quest-bounties/blob/main/bounties/level-2/federation-server.md)
 
-Getting Started
+
+Register Supabase account
 --------
 
-First, set up environment variables:
+You need to register a [Supabase](https://supabase.io) account and acquire below credentials in project Settings:
+ 
+ - Server URL
+ - Anon Key
+ - Service Key
+
+Set up database schema
+--------
+Open the SQL in Supabase project dashboard then run the script in `schema.sql` to set up tables, functions and triggers
+
+Set up environment variables
+--------
 
 ```bash
 npm run setup
 # or
 yarn setup 
 ```
+Enter the credentials as instructed in the CLI.
 
-Then, run the development server:
+
+Run the development server
+--------
 
 ```bash
 npm run dev
 # or
 yarn dev
 ```
-
-Features
---------
-
- - **Typescript** support
- - **envdist** to set up environment variables
- - Authentication with **Supabase** or **Firebase**
-    - Email/password or passwordless with magic link
-    - Multiple providers: Google, Facebook, Twitter, Github, Discord,...
- - **jotai** for primitive & flexible state management
- - **SWR** for data fetching
- - Useful React Hooks
-   - `useAuth` for getting user information
-   - `useInterval` for for timeout tasks
- - **await-to-js** for easier error handling with async functions
- - **TailwindCSS** for styling with utility-first classes
-   - **@tailwindcss/forms**: Form reset for easier applying utility classes
-   - **@tailwindcss/aspect-ratio**: Utilities to apply aspect ratio to elements
- - **NProgress** for page transition progress indicator
- - Custom 404, 403 pages
- - Multiple icons with **Heroicons**

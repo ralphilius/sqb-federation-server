@@ -16,8 +16,9 @@ type Error = {
 }
 
 function validAddress(name: string): boolean {
+  if(!process.env.FEDERATION_DOMAIN) throw new ErrorEvent("FEDERATION_DOMAIN must be defined")
   const parts: string[] = name.split("*");
-  return parts[1] == 'ralphilius.github.io'
+  return parts[1] == process.env.FEDERATION_DOMAIN
 }
 
 const cors = asyncMiddleware(
@@ -51,7 +52,7 @@ export default async function handler(
   if(!data || data.length == 0) return res.status(404).end();
 
   res.json({
-    stellar_address: data[0]['address'],
-    account_id: data[0]['username']
+    stellar_address: `${data[0]['username']}*${process.env.FEDERATION_DOMAIN}`,
+    account_id: data[0]['address']
   })
 }
