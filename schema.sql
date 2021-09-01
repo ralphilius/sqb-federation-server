@@ -1,8 +1,8 @@
 create table addresses (
   id uuid references auth.users not null primary key,
-  username text,
-  address text
-)
+  username text unique,
+  address text unique
+);
 alter table addresses enable row level security;
 create policy "Can view own user data." on addresses for select using (auth.uid() = id);
 create policy "Can update own user data." on addresses for update using (auth.uid() = id);
@@ -34,3 +34,10 @@ $$ language plpgsql security definer;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+/**
+ * REALTIME SUBSCRIPTIONS
+ * Only allow realtime listening on public tables.
+ */
+drop publication if exists supabase_realtime;
+create publication supabase_realtime for table addresses;
