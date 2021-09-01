@@ -76,10 +76,14 @@ export const useAddress = (id: string) => {
     return await supabase.from("addresses").update({address: address}).match({id: id});
   }
 
+  const saveUsername = async (id: string, username: string) => {
+    return await supabase.from("addresses").update({username: username}).match({id: id});
+  }
 
   return {
     address,
-    saveAddress
+    saveAddress,
+    saveUsername
   }
 }
 

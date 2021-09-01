@@ -16,9 +16,9 @@ type Error = {
 }
 
 function validAddress(name: string): boolean {
-  if(!process.env.FEDERATION_DOMAIN) throw new ErrorEvent("FEDERATION_DOMAIN must be defined")
+  if(!process.env.NEXT_PUBLIC_FEDERATION_DOMAIN) throw new ErrorEvent("NEXT_PUBLIC_FEDERATION_DOMAIN must be defined")
   const parts: string[] = name.split("*");
-  return parts[1] == process.env.FEDERATION_DOMAIN
+  return parts[1] == process.env.NEXT_PUBLIC_FEDERATION_DOMAIN
 }
 
 const cors = asyncMiddleware(
@@ -52,7 +52,7 @@ export default async function handler(
   if(!data || data.length == 0) return res.status(404).end();
 
   res.json({
-    stellar_address: `${data[0]['username']}*${process.env.FEDERATION_DOMAIN}`,
+    stellar_address: `${data[0]['username']}*${process.env.NEXT_PUBLIC_FEDERATION_DOMAIN}`,
     account_id: data[0]['address']
   })
 }
