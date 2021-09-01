@@ -22,7 +22,6 @@ export const withAuth = ({
   const router = useRouter();
   const { user, loading } = useAuth();
   useEffect(() => {
-    console.log("useEffect", !loading && !user && !isWhitelisted(router.pathname));
     if (!loading && !user && !isWhitelisted(router.pathname)) {
       router.push('/auth')
     }

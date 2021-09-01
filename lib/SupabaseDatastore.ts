@@ -1,8 +1,9 @@
-import { AuthEvent, AuthProvider, Unsubscribe, AuthOptions, IDatastore } from "./IDatastore";
+import { AuthEvent, AuthProvider, Unsubscribe, AuthOptions, IAuth } from "./IAuth";
 import { SupabaseClient, Session, User } from '@supabase/supabase-js'
 import { initSupabase } from "./supabase";
+import { IDatastore } from "./IDatastore";
 
-export class SupabaseDatastore implements IDatastore<User, Session> {
+export class SupabaseDatastore implements IAuth<User, Session>, IDatastore {
   private client: SupabaseClient;
 
   constructor() {

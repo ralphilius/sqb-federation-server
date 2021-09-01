@@ -1,12 +1,12 @@
 import { atom, useAtom } from "jotai"
 import { useEffect } from "react";
 import nookies from 'nookies';
-import { AuthEvent, AuthProvider } from "../lib/IDatastore";
+import { AuthEvent, AuthProvider, AuthUser } from "../lib/IAuth";
 import { SupabaseDatastore } from "../lib/SupabaseDatastore";
 import { Session } from "@supabase/supabase-js";
 import to from 'await-to-js';
 
-const userAtom = atom<any>(null);
+const userAtom = atom<AuthUser | null>(null);
 const userLoadingAtmom = atom(true);
 const ds = new SupabaseDatastore();
 
