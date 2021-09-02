@@ -34,3 +34,11 @@ npm run dev
 # or
 yarn dev
 ```
+
+Test the implementation
+--------
+
+API is available under `/api/federation` endpoint. Supported queries:
+
+ - `q`: Federation address to query for Stellar address
+ - `type`: Only `name` is supported now
