@@ -5,7 +5,6 @@ import { verifyMessageSignature } from '@albedo-link/signature-verification'
 import { useEffect, useState } from 'react';
 import fetcher from '../lib/fetcher';
 import { useAuth } from '../hooks/use-auth';
-import { useRouter } from 'next/router';
 
 type AccountDetailRowSpec = {
   label: string
@@ -41,7 +40,6 @@ type AccountDetailsSpec = {
 }
 
 const AccountDetails: React.FC<AccountDetailsSpec> = ({ user }) => {
-  const router = useRouter();
   const { signout } = useAuth();
   const { address, saveAddress, saveUsername } = useAddress(user.id);
   const [editingFederation, setEditingFederation] = useState(false);

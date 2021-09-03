@@ -49,15 +49,14 @@ type ServerAddress = {
 export const useAddress = (id: string) => {
   const [address, setAddress] = useState<ServerAddress | null>(null);
 
-  const fetchAddress = async (id: string) => {
-    const { data, error } = await supabase.from("addresses").select("*").eq("id", id);
-
-    if (error || !data || data.length == 0) return;
-
-    return setAddress(data[0]);
-  }
-
   useEffect(() => {
+    const fetchAddress = async (id: string) => {
+      const { data, error } = await supabase.from("addresses").select("*").eq("id", id);
+      if (error || !data || data.length == 0) return;
+  
+      return setAddress(data[0]);
+    }
+
     fetchAddress(id);
     const addressListener = supabase
       .from("addresses")

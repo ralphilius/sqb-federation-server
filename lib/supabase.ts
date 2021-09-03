@@ -22,8 +22,7 @@ export function initSupabase(server: boolean = false) {
 
   return createClient(
     supabaseUrl,
-    supabaseKey,
-    { persistSession: false }
+    supabaseKey
   )
 }
 
