@@ -1,9 +1,8 @@
 import { atom, useAtom } from "jotai"
 import { useEffect } from "react";
 import nookies from 'nookies';
-import { AuthEvent, AuthProvider, AuthUser } from "../lib/IAuth";
+import { AuthEvent, AuthProvider, AuthSession, AuthUser } from "../lib/IAuth";
 import { SupabaseDatastore } from "../lib/SupabaseDatastore";
-import { Session } from "@supabase/supabase-js";
 import to from 'await-to-js';
 
 const userAtom = atom<AuthUser | null>(null);
@@ -20,7 +19,7 @@ export const useAuth = () => {
       ; (window as any).nookies = nookies
     }
 
-    const subscription = ds.onAuthStateChanged((event: AuthEvent, session: Session) => {
+    const subscription = ds.onAuthStateChanged((event: AuthEvent, session: AuthSession) => {
       if (session?.user) {
         setUser(session?.user);
         nookies.destroy(null, 'token');
@@ -31,7 +30,7 @@ export const useAuth = () => {
         nookies.set(null, 'token', '', { path: '/' })
       }
     });
-    
+
     if (loading) setLoading(false)
 
     return () => {

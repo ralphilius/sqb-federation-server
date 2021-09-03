@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import { useAuth } from '../../hooks/use-auth'
 
 const AuthLogout = () => {
-  console.log("AuthLogout");
   const { signout } = useAuth()
   const router = useRouter()
   useEffect(() => {

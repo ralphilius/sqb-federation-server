@@ -62,7 +62,6 @@ export const useAddress = (id: string) => {
     const addressListener = supabase
       .from("addresses")
       .on('*', (payload) => {
-        console.log('Change received!', payload)
         setAddress(payload.new)
       })
       .subscribe();

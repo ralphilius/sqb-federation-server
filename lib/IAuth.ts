@@ -1,4 +1,4 @@
-import { User } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 
 export type AuthEvent = 'SIGNED_IN' | 'SIGNED_OUT' | 'ID_TOKEN' | 'USER_UPDATED' | 'USER_DELETED' | 'PASSWORD_RECOVERY';
 
@@ -15,16 +15,11 @@ export type AuthOptions = {
   scopes?: string
 }
 
-export type AuthSession = {
-  access_token: string
-  expires_in?: number
-  expires_at?: number
-  refresh_token?: string
-}
+export type AuthSession = Session;
 
 export interface IAuth<U, S> {
   signinWithEmail(email: string, password?: string): Promise<U | null>;
   signinWithProvider(provider: AuthProvider, options?: AuthOptions): Promise<S | null>;
   signout(): Promise<void>;
-  onAuthStateChanged(callback: (event: AuthEvent, data: any) => void): Unsubscribe;
+  onAuthStateChanged(callback: (event: AuthEvent, data: S) => void): Unsubscribe;
 }

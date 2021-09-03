@@ -1,9 +1,9 @@
-import { AuthEvent, AuthProvider, Unsubscribe, AuthOptions, IAuth } from "./IAuth";
+import { AuthEvent, AuthProvider, Unsubscribe, AuthOptions, IAuth, AuthSession } from "./IAuth";
 import { SupabaseClient, Session, User } from '@supabase/supabase-js'
 import { initSupabase } from "./supabase";
 import { IDatastore } from "./IDatastore";
 
-export class SupabaseDatastore implements IAuth<User, Session>, IDatastore {
+export class SupabaseDatastore implements IAuth<User, AuthSession>, IDatastore {
   private client: SupabaseClient;
 
   constructor() {
@@ -14,7 +14,7 @@ export class SupabaseDatastore implements IAuth<User, Session>, IDatastore {
     return this.client.auth.signIn({ email, password}).then(res => res.user)
   }
 
-  async signinWithProvider(provider: AuthProvider, options?: AuthOptions): Promise<Session | null> {
+  async signinWithProvider(provider: AuthProvider, options?: AuthOptions): Promise<AuthSession | null> {
     const val = await this.client.auth.signIn({ provider: provider }, options);
     return val.session;
   }
@@ -38,6 +38,10 @@ export class SupabaseDatastore implements IAuth<User, Session>, IDatastore {
     if (!stateChange || !stateChange.data) return { unsubscribe: () => { } }
 
     return stateChange.data;
+  }
+
+  public getClient(){
+    return this.client;
   }
 
 }

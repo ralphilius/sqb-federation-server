@@ -3,6 +3,9 @@ import { AuthUser } from '../lib/IAuth';
 import albedo from '@albedo-link/intent'
 import { verifyMessageSignature } from '@albedo-link/signature-verification'
 import { useEffect, useState } from 'react';
+import fetcher from '../lib/fetcher';
+import { useAuth } from '../hooks/use-auth';
+import { useRouter } from 'next/router';
 
 type AccountDetailRowSpec = {
   label: string
@@ -38,13 +41,14 @@ type AccountDetailsSpec = {
 }
 
 const AccountDetails: React.FC<AccountDetailsSpec> = ({ user }) => {
+  const router = useRouter();
+  const { signout } = useAuth();
   const { address, saveAddress, saveUsername } = useAddress(user.id);
   const [editingFederation, setEditingFederation] = useState(false);
   const currentAddress = address ? `${address['username']}*${process.env.NEXT_PUBLIC_FEDERATION_DOMAIN}` : "";
   const [username, onChanged] = useState(address?.['username'] || "");
-  
+
   useEffect(() => {
-    console.log("useEffect", address)
     onChanged(address?.['username'] || "");
   }, [address])
 
@@ -94,10 +98,8 @@ const AccountDetails: React.FC<AccountDetailsSpec> = ({ user }) => {
             <span className="ml-4 flex-shrink-0 justify-center">
               <RowButton
                 onClick={async () => {
-                  if(editingFederation && username != address?.['username']){
-                    const { data, error } = await saveUsername(user.id, username);
-                    // console.log(data);
-                    // console.log(error);
+                  if (editingFederation && username != address?.['username']) {
+                    await saveUsername(user.id, username);
                   }
                   setEditingFederation(!editingFederation)
                 }}
@@ -106,6 +108,24 @@ const AccountDetails: React.FC<AccountDetailsSpec> = ({ user }) => {
               </RowButton>
             </span>
           </AccountDetailRow>
+          <div className="py-4 sm:grid sm:py-5 sm:grid-cols-3 sm:gap-4">
+            <dt
+              className="text-sm font-light text-red-500 cursor-pointer"
+              onClick={() => {
+                fetcher("/api/me", {
+                  method: "DELETE",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({ uid: user.id })
+                }).then(() => {
+                  signout();
+                })
+              }}
+            >
+              Delete account
+            </dt>
+          </div>
         </dl>
       </div>
     </>

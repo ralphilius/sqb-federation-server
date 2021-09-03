@@ -79,7 +79,7 @@ const AuthPage = () => {
                   e.preventDefault();
                   signinWithEmail(email).then(user => {
                     setEmailSent(true);
-                  }).catch(e => console.log(e));
+                  });
                 }}
               >
                 Sign in with magic link
