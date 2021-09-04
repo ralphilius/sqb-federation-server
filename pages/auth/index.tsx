@@ -32,44 +32,8 @@ const AuthPage = () => {
               </div>
             </div>
             {emailSent && <div className="p-2 text-xs text-green-700">
-              We sent an email to you. It has a magic link that'll sign you in. Please also check your Spam inbox!
+              We sent an email to you. It has a magic link that&apos;ll sign you in. Please also check your Spam inbox!
             </div>}
-
-            {/* <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                />
-              </div>
-            </div> */}
-
-            {/* <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
-
-              <div className="text-sm">
-                <a href="#" className="font-medium text-green-600 hover:text-green-500">
-                  Forgot your password?
-                </a>
-              </div>
-            </div> */}
 
             <div className="pt-2">
               <button
