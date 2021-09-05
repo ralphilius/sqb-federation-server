@@ -29,6 +29,13 @@ const cors = asyncMiddleware(
   })
 )
 
+function prepareErrorMessage(q, type){
+  if(!q || !type) return "Missing required parameters"
+  if(type != "name") return "Only name is supported as type value";
+  if(type == 'name' && !validAddress(q as string)) return "Invalid federation address"
+  return '';
+}
+
 const supabase = initSupabase(true);
 export default async function handler(
   req: NextApiRequest,
@@ -38,7 +45,9 @@ export default async function handler(
 
   if (!req.method || !['GET'].includes(req.method)) return res.status(405).end();
 
-  if (!q || !type || (type == 'name' && !validAddress(q as string))) return res.status(400).end();
+  if (!q || !type || (type == 'name' && !validAddress(q as string))) return res.status(400).json({
+    error: prepareErrorMessage(q, type)
+  });
 
   const username = (q as string).split("*")[0];
   
@@ -49,7 +58,7 @@ export default async function handler(
 
   if(error) return res.status(500).json({error: "Unable to search for user"});
 
-  if(!data || data.length == 0) return res.status(404).end();
+  if(!data || data.length == 0 || !data[0]['address']) return res.status(404).end();
 
   res.json({
     stellar_address: `${data[0]['username']}*${process.env.NEXT_PUBLIC_FEDERATION_DOMAIN}`,
