@@ -2,10 +2,16 @@ import { useState } from "react";
 import { useAuth } from "../../hooks/use-auth";
 import Image from 'next/image'
 
+function isValidEmail(email): boolean {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
 const AuthPage = () => {
   const { signinWithEmail, signinWithProvider } = useAuth();
   const [email, setEmail] = useState<string>('');
   const [emailSent, setEmailSent] = useState(false);
+  const [invalidEmail, setInvalidEmail] = useState(false);
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -28,11 +34,22 @@ const AuthPage = () => {
                   value={email}
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
                   onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() => {
+                    if(!isValidEmail(email) && email.length > 0) setInvalidEmail(true);
+                  }}
+                  onInput={() => {
+                    setInvalidEmail(false);
+                    setEmailSent(false);
+                  }}
                 />
               </div>
             </div>
             {emailSent && <div className="p-2 text-xs text-green-700">
-              We sent an email to you. It has a magic link that&apos;ll sign you in. Please also check your Spam inbox!
+              We sent an email to you (<b>{email}</b>). It has a magic link that&apos;ll sign you in. Please also check your Spam inbox!
+            </div>}
+
+            {invalidEmail && <div className="p-2 text-xs text-red-700">
+              Please enter a valid email address.
             </div>}
 
             <div className="pt-2">
@@ -41,9 +58,14 @@ const AuthPage = () => {
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                 onClick={(e) => {
                   e.preventDefault();
-                  signinWithEmail(email).then(user => {
-                    setEmailSent(true);
-                  });
+                  if(isValidEmail(email)){
+                    signinWithEmail(email).then(user => {
+                      setEmailSent(true);
+                    });
+                  } else {
+                    setInvalidEmail(true)
+                  }
+                 
                 }}
               >
                 Sign in with magic link
