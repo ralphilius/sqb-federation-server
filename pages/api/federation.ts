@@ -45,7 +45,7 @@ export default async function handler(
 
   if (!req.method || !['GET'].includes(req.method)) return res.status(405).end();
 
-  if (!q || !type || (type == 'name' && !validAddress(q as string))) return res.status(400).json({
+  if (!q || !type || type != 'name' || (type == 'name' && !validAddress(q as string))) return res.status(400).json({
     error: prepareErrorMessage(q, type)
   });
 
